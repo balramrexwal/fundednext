@@ -40,10 +40,20 @@ urls = [
 
 keywords = ["coupon", "promo", "discount", "%off", "% off", "code", "voucher", "offer"]
 
+# Common headers to mimic a real browser
+headers = {
+    "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                   "AppleWebKit/537.36 (KHTML, like Gecko) "
+                   "Chrome/116.0.0.0 Safari/537.36"),
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+    "Referer": "https://google.com",
+}
+
 def search_hidden_codes(urls):
     for url in urls:
         try:
-            r = requests.get(url, timeout=10)  # SSL verify is enabled by default
+            r = requests.get(url, headers=headers, timeout=10)  # SSL verify enabled by default
             r.raise_for_status()
 
             soup = BeautifulSoup(r.text, "html.parser")
@@ -60,10 +70,12 @@ def search_hidden_codes(urls):
                 print(f"🔎 Potential promo mention in: {url}")
                 print(f"   ➝ Found keywords: {set(matches)}")
                 print("--------------------------------------------------")
+        except HTTPError as http_err:
+            print(f"❌ HTTP error fetching {url}: {http_err}")
         except SSLError as ssl_err:
             print(f"⚠️ SSL verification error fetching {url}: {ssl_err}")
-        except requests.RequestException as e:
-            print(f"⚠️ Error fetching {url}: {e}")
+        except Exception as e:
+            print(f"⚠️ Other error fetching {url}: {e}")
 
 if __name__ == "__main__":
-    search_hidden_codes(urls)
+    search_hidden_codes(urls) 
