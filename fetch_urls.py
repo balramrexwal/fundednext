@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup, Comment
-from requests.exceptions import SSLError
+from requests.exceptions import SSLError, HTTPError
 
 urls = [
     # Add your list of FundedNext URLs here
