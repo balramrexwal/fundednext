@@ -48,6 +48,9 @@ headers = {
     "Accept-Language": "en-US,en;q=0.9",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
     "Referer": "https://google.com",
+    "Connection": "keep-alive",
+    "Cache-Control": "max-age=0",
+    # If possible add a cookie header with session cookies obtained manually.
 }
 
 def search_hidden_codes(urls):
